@@ -2,12 +2,35 @@ import re
 import spacy
 spacy.load('en_core_web_sm')
 from spacy.lang.en import English
+from datasets import list_datasets, list_metrics, load_dataset, load_metric
+import pandas as pd
+from google.colab import files
+
+def download_data_tsv(dataframe):
+  dataframe.to_csv('threelakh_random_articles.tsv',sep="\t") 
+  files.download('threelakh_random_articles.tsv')
+
+def loading_dataset():
+    dataset = load_dataset('wikipedia','20200501.en', split='train[:5%]')
+    dataframe  = pd.DataFrame(dataset[:3])
+    cleaned_dataframe = create_clean_df(dataframe)
+    download_data_tsv(cleaned_dataframe)
+    return cleaned_dataframe
+
+
+def convert_non_ascii(text):
+  """
+  function to covert the non-unicode string literal to unicode
+  """
+  encoded_string = text.encode("ascii", "ignore")
+  decode_string = encoded_string.decode()
+  return decode_string
+
 
 def create_clean_df(dataframe):
   count = 0
 
   for article_txt in dataframe.text:
-    print(count)
     if not article_txt == None :
       article_txt = re.sub(r"&nbsp","",article_txt)
       article_txt = re.sub(r"http\S+","",article_txt)   
