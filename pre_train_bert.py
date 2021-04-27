@@ -226,3 +226,4 @@ if BUCKET_NAME:
   --doc_stride 128 \
   --output_dir gs://another_qa_bucket/bert_model_wiki/
 
+!python /content/bi-att-flow/squad/evaluate-v1.1.py /content/dev-v1.1.json /content/bert_model_wiki_predictions.json
