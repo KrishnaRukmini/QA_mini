@@ -107,12 +107,12 @@ def read_sentencepiece_vocab(filepath):
 snt_vocab = read_sentencepiece_vocab("{}.vocab".format(MODEL_PREFIX))
 
 def parse_sentencepiece_token(token):
-    if token.startswith("▁"):
+    if token.startswith('_'):
         return token[1:]
     else:
         return "##" + token
 
-bert_vocab = list(map(parse_sentencepiece_token, snt_vocab))
+bert_vocab = list(map(parse_sentencepiece_token,snt_vocab))
 token_sub = ["[PAD]","[UNK]","[CLS]","[SEP]","[MASK]"]
 bert_vocab = token_sub + bert_vocab
 bert_vocab += ["[UNUSED_{}]".format(i) for i in range(VOC_SIZE - len(bert_vocab))]
